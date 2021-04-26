@@ -33,3 +33,8 @@
 
 # Executable compiler
 compiler
+
+# lexer and parser
+lex.yy.cpp
+parser.tab.cpp
+parser.tab.hpp
