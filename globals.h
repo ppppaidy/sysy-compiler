@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <string>
 
-int sysy2eeyore = 0;
-int eeyore2tigger = 0;
-int tigger2riscv = 0;
+extern FILE* source;
+extern FILE* listing;
 
 #endif
