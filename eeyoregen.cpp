@@ -107,11 +107,13 @@ int EeyoreGenner::printCompUnit(CompUnit* node){
     now_in_arr_init = 0;
     return_val = 0;
     now_in_assign_l = 0;
+    init_on_main = "";
     block_stack.push_back(compunit_id);
+    add_var_to_now_func(1);
     for(size_t i = 0; i < node->nb.size(); i++){
         if(node->nb[i]->type_name != "FuncDef") continue;
         if(((FuncDef*)(node->nb[i]))->ident->id_name != "main") continue;
-        main_id = ((FuncDef*)(node->nb[i]))->ident->NodeID;
+        main_id = ((FuncDef*)(node->nb[i]))->NodeID;
     }
     printf("func : %d compunit : %d main : %d\n", func_now, compunit_id, main_id);
     for(size_t i = 0; i < node->nb.size(); i++){
@@ -168,18 +170,58 @@ int EeyoreGenner::printConstDef(ConstDef* node){
             var_arr_size_vec[node->NodeID].push_back(t);
             var_arr_size[node->NodeID] *= t;
         }
+        std::string code_now = "";
+        code_now = code_now + "t1 = 0\n";
+        code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
+        code_now = code_now + "if t1 == " + std::to_string(var_arr_size[node->NodeID])
+            + " goto l" + std::to_string(node->NodeID) + "0\n";
+        code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
+        code_now = code_now + "t1 = t1 + 4\n";
+        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1:\n";
+        code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+        now_arr = node->NodeID;
+        now_arr_step = 4;
+        now_arr_size = var_arr_size[now_arr];
+        now_arr_layer = 0;
+        now_arr_pos = 0;
         now_in_arr_init = 1;
+        code_string = "";
         print(node->civ);
+        code_now = code_now + code_string;
+        code_string = code_now;
         now_in_arr_init = 0;
+        if(func_now == compunit_id){
+            init_on_main = init_on_main + code_string;
+            code_string = "";
+        }
     }
     return 0;
 }
 
 int EeyoreGenner::printConstInitVal(ConstInitVal* node){
     printf("ConstInitVal\n");
-    if(!now_in_arr_init){
-        return print(node->ce[0]);
+    if(!node->has_bparen){
+        int t = print(node->ce[0]);
+        if(now_in_arr_init){
+            code_string = code_string + gen_var(now_arr) 
+                + "[" + std::to_string(now_arr_pos) + "] = " + gen_var(t) + "\n";
+            now_arr_pos += 4;
+        }
+        return t;
     }
+    int nxt_arr_pos = now_arr_pos + now_arr_size;
+    now_arr_size /= var_arr_size_vec[now_arr][now_arr_layer];
+    now_arr_layer += 1;
+    std::string code_now = "";
+    for(size_t i = 0; i < node->ce.size(); i++){
+        code_string = "";
+        int t = print(node->ce[i]);
+        code_now = code_now + code_string;
+    }
+    code_string = code_now;
+    now_arr_layer -= 1;
+    now_arr_size *= var_arr_size_vec[now_arr][now_arr_layer];
+    now_arr_pos = nxt_arr_pos;
     return 0;
 }
 
@@ -224,18 +266,58 @@ int EeyoreGenner::printVarDef(VarDef* node){
             var_arr_size_vec[node->NodeID].push_back(t);
             var_arr_size[node->NodeID] *= t;
         }
+        std::string code_now = "";
+        code_now = code_now + "t1 = 0\n";
+        code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
+        code_now = code_now + "if t1 == " + std::to_string(var_arr_size[node->NodeID])
+            + " goto l" + std::to_string(node->NodeID) + "0\n";
+        code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
+        code_now = code_now + "t1 = t1 + 4\n";
+        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1:\n";
+        code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+        now_arr = node->NodeID;
+        now_arr_step = 4;
+        now_arr_size = var_arr_size[now_arr];
+        now_arr_layer = 0;
+        now_arr_pos = 0;
         now_in_arr_init = 1;
+        code_string = "";
         print(node->iv);
+        code_now = code_now + code_string;
+        code_string = code_now;
         now_in_arr_init = 0;
+        if(func_now == compunit_id){
+            init_on_main = init_on_main + code_string;
+            code_string = "";
+        }
     }
     return 0;
 }
 
 int EeyoreGenner::printInitVal(InitVal* node){
     printf("InitVal\n");
-    if(!now_in_arr_init){
-        return print(node->e[0]);
+    if(!node->has_bparen){
+        int t = print(node->e[0]);
+        if(now_in_arr_init){
+            code_string = code_string + gen_var(now_arr) 
+                + "[" + std::to_string(now_arr_pos) + "] = " + gen_var(t) + "\n";
+            now_arr_pos += 4;
+        }
+        return t;
     }
+    int nxt_arr_pos = now_arr_pos + now_arr_size;
+    now_arr_size /= var_arr_size_vec[now_arr][now_arr_layer];
+    now_arr_layer += 1;
+    std::string code_now = "";
+    for(size_t i = 0; i < node->e.size(); i++){
+        code_string = "";
+        int t = print(node->e[i]);
+        code_now = code_now + code_string;
+    }
+    code_string = code_now;
+    now_arr_layer -= 1;
+    now_arr_size *= var_arr_size_vec[now_arr][now_arr_layer];
+    now_arr_pos = nxt_arr_pos;
     return 0;
 }
 
@@ -251,6 +333,10 @@ int EeyoreGenner::printFuncDef(FuncDef* node){
     }
     block_stack.pop_back();
     print(node->body);
+
+    if(node->NodeID == main_id){
+        code_string = init_on_main + code_string;
+    }
 
     for(size_t i = 0; i < vars_on_func[func_now].size(); i++){
         code_string = gen_var_code(vars_on_func[func_now][i]) + code_string;
