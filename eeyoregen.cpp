@@ -117,6 +117,13 @@ int EeyoreGenner::printCompUnit(CompUnit* node){
     }
     printf("func : %d compunit : %d main : %d\n", func_now, compunit_id, main_id);
     for(size_t i = 0; i < node->nb.size(); i++){
+        if(node->nb[i]->NodeID == main_id) continue;
+        code_string = "";
+        print(node->nb[i]);
+        code_now = code_now + code_string;
+    }
+    for(size_t i = 0; i < node->nb.size(); i++){
+        if(node->nb[i]->NodeID != main_id) continue;
         code_string = "";
         print(node->nb[i]);
         code_now = code_now + code_string;
