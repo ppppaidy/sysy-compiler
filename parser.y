@@ -384,10 +384,10 @@ stmt            :   lval ASSIGN exp SEMI
 
 
 
-exp             :   lorexp
+exp             :   addexp
                     {
                         $$ = new Exp;
-                        ((Exp*)$$)->ae = (LOrExp*)$1;
+                        ((Exp*)$$)->ae = (AddExp*)$1;
                     }
                 ;
 
