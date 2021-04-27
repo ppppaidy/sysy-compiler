@@ -4,6 +4,7 @@
 #include "eeyoregen.h"
 
 int EeyoreGenner::printFinal(NodeBase* root){
+    exit(NodeBase::NodeNum);
     print(root);
     fprintf(o_file, "%s\n\n", code_string.c_str());
     return 0;
