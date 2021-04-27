@@ -179,7 +179,7 @@ int EeyoreGenner::printConstDef(ConstDef* node){
             code_string = "";
         }
     }
-    else{
+    else{exit(10);
         return_val = 1;
         var_arr_size[node->NodeID] = 4;
         for(size_t i = 0; i < node->arr.size(); i++){
@@ -281,7 +281,7 @@ int EeyoreGenner::printVarDef(VarDef* node){
             }
         }
     }
-    else{
+    else{exit(10);
         return_val = 1;
         var_arr_size[node->NodeID] = 4;
         for(size_t i = 0; i < node->arr.size(); i++){
