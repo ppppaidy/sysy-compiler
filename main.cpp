@@ -7,6 +7,8 @@
 #include "parse.h"
 #include "eeyoregen.h"
 
+int NodeBase::NodeNum = 1;
+
 char err_usage[] = "usage : %s -S [-e|-t] <filename>.[c|eeyore|tigger] -o <filename>.S\n";
 
 char filename[256], filename_o[256];

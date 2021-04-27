@@ -225,21 +225,25 @@ funcdef         :   VOID identifier LPAREN RPAREN block
                     {
                         $$ = new FuncDef;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$5;
                     }
                 |   INT identifier LPAREN RPAREN block
                     {
                         $$ = new FuncDef;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$5;
                     }
                 |   VOID identifier LPAREN funcfparams RPAREN block
                     {
                         $$ = $4;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$6;
                     }
                 |   INT identifier LPAREN funcfparams RPAREN block
                     {
                         $$ = $4;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$6;
                     }
                 ;
 
@@ -332,6 +336,7 @@ stmt            :   lval ASSIGN exp SEMI
                         $$ = new IfStmt;
                         ((IfStmt*)$$)->c = (Cond*)$3;
                         ((IfStmt*)$$)->then_body = (Stmt*)$5;
+                        ((IfStmt*)$$)->else_body = NULL;
                     }
                 |   IF LPAREN cond RPAREN stmt ELSE stmt
                     {
