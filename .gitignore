@@ -35,6 +35,5 @@
 compiler
 
 # lexer and parser
-lex.yy.cpp
-parser.tab.cpp
-parser.tab.hpp
+lexer.l
+parser.y
