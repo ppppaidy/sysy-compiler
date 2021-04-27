@@ -4,7 +4,6 @@
 #include "eeyoregen.h"
 
 int EeyoreGenner::printFinal(NodeBase* root){
-    exit(NodeBase::NodeNum);
     print(root);
     fprintf(o_file, "%s\n\n", code_string.c_str());
     return 0;
@@ -167,6 +166,7 @@ int EeyoreGenner::printConstDef(ConstDef* node){
     vars_on_block[block_stack[block_stack.size()-1]].push_back(node->NodeID);
     block_of_vars[node->NodeID] = block_stack[block_stack.size()-1];
     //print(node->ident);
+    exit(10);
     if(node->arr.size() == 0){
         code_string = "";
         return_val = 1;
