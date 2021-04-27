@@ -181,7 +181,7 @@ int EeyoreGenner::printConstDef(ConstDef* node){
             + " goto l" + std::to_string(node->NodeID) + "0\n";
         code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
         code_now = code_now + "t1 = t1 + 4\n";
-        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1:\n";
+        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
         code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
         now_arr = node->NodeID;
         now_arr_step = 4;
@@ -281,7 +281,7 @@ int EeyoreGenner::printVarDef(VarDef* node){
             + " goto l" + std::to_string(node->NodeID) + "0\n";
         code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
         code_now = code_now + "t1 = t1 + 4\n";
-        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1:\n";
+        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
         code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
         now_arr = node->NodeID;
         now_arr_step = 4;
