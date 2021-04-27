@@ -10,7 +10,10 @@ int EeyoreGenner::printFinal(NodeBase* root){
 }
 
 int EeyoreGenner::print(NodeBase* node){
-    if(node == NULL) return 0;
+    if(node == NULL){
+        code_string = "";
+        return 0;
+    }
     printf("%d : ", node->NodeID);
     if(node->type_name == "Identifier") return printIdentifier((Identifier*)node);
     if(node->type_name == "Number") return printNumber((Number*)node);
