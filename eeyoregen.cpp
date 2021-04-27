@@ -162,6 +162,10 @@ int EeyoreGenner::printConstDef(ConstDef* node){
         const_vars_val[node->NodeID] = t;
         code_string = code_string + gen_var(node->NodeID) 
             + " = " + std::to_string(t) + "\n";
+        if(func_now == compunit_id){
+            init_on_main = init_on_main + code_string;
+            code_string = "";
+        }
     }
     else{
         var_arr_size[node->NodeID] = 4;
@@ -257,6 +261,10 @@ int EeyoreGenner::printVarDef(VarDef* node){
             int t = print(node->iv);
             code_string = code_string + gen_var(node->NodeID) + " = " 
                 + gen_var(t) + "\n";
+            if(func_now == compunit_id){
+                init_on_main = init_on_main + code_string;
+                code_string = "";
+            }
         }
     }
     else{
