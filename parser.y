@@ -290,6 +290,10 @@ block           :   LBPAREN blockitems RBPAREN
                     {
                         $$ = $2;
                     }
+                |   LBPAREN RBPAREN
+                    {
+                        $$ = new Block;
+                    }
                 ;
 
 blockitems      :   blockitems blockitem

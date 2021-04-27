@@ -113,6 +113,12 @@ class EeyoreGenner{
         std::unordered_map<int, int> const_vars_val;
 
         int now_in_arr_init;
+
+        //stack of while stmt id
+        std::vector<int> while_stack;
+
+        //var_id -> param_id
+        std::unordered_map<int, int> var2param;
 };
 
 #endif

@@ -11,7 +11,7 @@
 digit                   [0-9]
 nonzero_digit           [1-9]
 octal_digit             [0-7]
-hexdecimal_digit        [0-9a-f]
+hexdecimal_digit        [0-9a-fA-F]
 identifier_nondigit     [_a-zA-Z]
 identifier              {identifier_nondigit}({identifier_nondigit}|{digit})*
 decimal_const           {nonzero_digit}{digit}*

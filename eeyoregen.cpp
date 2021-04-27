@@ -76,10 +76,11 @@ int EeyoreGenner::printNumber(Number* node){
 }
 
 std::string EeyoreGenner::gen_var(int id){
+    if(id < 0) id = -id;
     std::string name = std::to_string(id);
     if(vars_type[id] == 1) return "t"+name;
     if(vars_type[id] == 2) return "T"+name;
-    if(vars_type[id] == 3) return "p"+name;
+    if(vars_type[id] == 3) return "p"+std::to_string(var2param[id]);
     return name;
 }
 
@@ -191,8 +192,10 @@ int EeyoreGenner::printFuncDef(FuncDef* node){
     func_now = node->NodeID;
     //print(node->ident);
     block_stack.push_back(node->body->NodeID);
-    for(size_t i = 0; i < node->fp.size(); i++)
-        print(node->fp[i]);
+    for(size_t i = 0; i < node->fp.size(); i++){
+        int p = print(node->fp[i]);
+        var2param[p] = i;
+    }
     block_stack.pop_back();
     print(node->body);
 
@@ -212,7 +215,13 @@ int EeyoreGenner::printFuncDef(FuncDef* node){
 
 int EeyoreGenner::printFuncFParam(FuncFParam* node){
     printf("FuncFParam\n");
-    return 0;
+    str2vars[node->ident->id_name].push_back(node->NodeID);
+    vars2str[node->NodeID] = node->ident->id_name;
+    vars_type[node->NodeID] = 3;
+    vars_on_block[block_stack[block_stack.size()-1]].push_back(node->NodeID);
+    block_of_vars[node->NodeID] = block_stack[block_stack.size()-1];
+    if(node->ce.size() == 0) return 0;
+    return node->NodeID;
 }
 
 int EeyoreGenner::printBlock(Block* node){
@@ -282,25 +291,52 @@ int EeyoreGenner::printIfStmt(IfStmt* node){
     code_string = "";
     int cc = print(node->c);
     code_now = code_now + code_string;
+    code_now = code_now
+        + "if " + gen_var(cc) + " == 0 goto l"
+        + std::to_string(node->NodeID) + "0\n";
     code_string = "";
     int t = print(node->then_body);
     code_now = code_now + code_string;
+    code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
+    code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+    code_string = "";
+    int e = print(node->else_body);
+    code_now = code_now + code_string;
+    code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
     code_string = code_now;
     return 0;
 }
 
 int EeyoreGenner::printWhileStmt(WhileStmt* node){
     printf("WhileStmt\n");
+    while_stack.push_back(node->NodeID);
+    std::string code_now = "";
+    code_now = "l" + std::to_string(node->NodeID) + "0:\n";
+    code_string = "";
+    int cc = print(node->c);
+    code_now = code_now + code_string;
+    code_now = code_now
+        + "if " + gen_var(cc) + " == 0 goto l"
+        + std::to_string(node->NodeID) + "1\n";
+    code_string = "";
+    print(node->body);
+    code_now = code_now + code_string;
+    code_now = code_now + "goto l" + std::to_string(node->NodeID) + "0\n";
+    code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
+    while_stack.pop_back();
+    code_string = code_now;
     return 0;
 }
 
 int EeyoreGenner::printBreakStmt(BreakStmt* node){
     printf("BreakStmt\n");
+    code_string = "goto l" + std::to_string(while_stack[while_stack.size()-1]) + "1\n";
     return 0;
 }
 
 int EeyoreGenner::printContinueStmt(ContinueStmt* node){
     printf("ContinueStmt\n");
+    code_string = "goto l" + std::to_string(while_stack[while_stack.size()-1]) + "0\n";
     return 0;
 }
 
@@ -343,12 +379,35 @@ int EeyoreGenner::printPrimaryExp(PrimaryExp* node){
 
 int EeyoreGenner::printFuncExp(FuncExp* node){
     printf("FuncExp\n");
-    return 0;
+    add_var_to_now_func(node->NodeID);
+    std::string code_now;
+    for(size_t i = 0; i < node->params.size(); i++){
+        code_string = "";
+        int t = print(node->params[i]);
+        code_now = code_now + code_string;
+        code_now = code_now + "param " + gen_var(t) + "\n";
+    }
+    if(node->ident->id_name == "putint"
+    || node->ident->id_name == "putch"
+    || node->ident->id_name == "putarray"){
+        code_now = code_now + "call f_" + node->ident->id_name + "\n";
+    }
+    else{
+        code_now = code_now + gen_var(node->NodeID) + " = call f_" 
+            + node->ident->id_name + "\n";
+    }
+    code_string = code_now;
+    return node->NodeID;
 }
 
 int EeyoreGenner::printUnaryExp(UnaryExp* node){
     printf("UnaryExp\n");
-    return 0;
+    if(node->uo == "+") return print(node->ue);
+    add_var_to_now_func(node->NodeID);
+    int t = print(node->ue);
+    code_string = code_string
+        + gen_var(node->NodeID) + " = " + node->uo + gen_var(t) + "\n";
+    return node->NodeID;
 }
 
 int EeyoreGenner::printUnaryOp(UnaryOp* node){
