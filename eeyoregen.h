@@ -58,6 +58,7 @@ class EeyoreGenner{
 
         std::string gen_var_code(int id);
         std::string gen_var(int id);
+        std::string gen_var_with_arr(int id);
         void add_var_to_now_func(int id);
 
         //string for code
@@ -119,6 +120,8 @@ class EeyoreGenner{
 
         //var_id -> param_id
         std::unordered_map<int, int> var2param;
+
+        int now_in_assign_l;
 };
 
 #endif

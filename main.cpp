@@ -82,7 +82,9 @@ int main(int argc, char* argv[]){
         listing = fopen(filename_o, "w");
         EeyoreGenner(listing).printFinal(ast_root);
         fclose(listing);
-
+        listing = fopen(output_filename, "w");
+        EeyoreGenner(listing).printFinal(ast_root);
+        fclose(listing);
     }
 
     //eeyore to tigger

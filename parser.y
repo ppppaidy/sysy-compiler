@@ -164,6 +164,12 @@ vardef          :   identifier
                         ((VarDef*)$$)->ident = (Identifier*)$1;
                         ((VarDef*)$$)->iv = NULL;
                     }
+                |   identifier arr_vardef
+                    {
+                        $$ = $2;
+                        ((VarDef*)$$)->ident = (Identifier*)$1;
+                        ((VarDef*)$$)->iv = (InitVal*)NULL;
+                    }
                 |   identifier ASSIGN initval
                     {
                         $$ = new VarDef;
@@ -266,7 +272,7 @@ funcfparam      :   INT identifier
                     }
                 |   INT identifier arr_funcfparam
                     {
-                        $$ = $2;
+                        $$ = $3;
                         ((FuncFParam*)$$)->ident = (Identifier*)$2;
                     }
                 ;
