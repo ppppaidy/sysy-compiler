@@ -48,13 +48,11 @@ class ConstExp;
 
 class NodeBase{
     public:
-        //static int NodeNum;
-        //NodeBase() {NodeID = NodeNum++;}
+        static int NodeNum;
+        NodeBase() {NodeID = NodeNum++;}
         std::string type_name;
-        //int NodeID;
+        int NodeID;
 };
-
-//int NodeBase::NodeNum = 0;
 
 class CompUnit : public NodeBase{
     public:
@@ -119,6 +117,7 @@ class FuncDef : public NodeBase{
         FuncDef() {type_name = "FuncDef";}
         Identifier* ident;
         std::vector<FuncFParam*> fp;
+        Block* body;
 };
 
 class FuncFParam : public NodeBase{
@@ -192,7 +191,7 @@ class ReturnStmt : public Stmt{
 class Exp : public NodeBase{
     public:
         Exp() {type_name = "Exp";}
-        AddExp* ae;
+        LOrExp* ae;
 };
 
 class Cond : public NodeBase{
@@ -271,7 +270,7 @@ class LOrExp : public NodeBase{
 class ConstExp : public NodeBase{
     public:
         ConstExp() {type_name = "ConstExp";}
-        AddExp* ae;
+        LOrExp* ae;
 };
 
 class Identifier : public NodeBase{

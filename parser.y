@@ -164,6 +164,12 @@ vardef          :   identifier
                         ((VarDef*)$$)->ident = (Identifier*)$1;
                         ((VarDef*)$$)->iv = NULL;
                     }
+                |   identifier arr_vardef
+                    {
+                        $$ = $2;
+                        ((VarDef*)$$)->ident = (Identifier*)$1;
+                        ((VarDef*)$$)->iv = (InitVal*)NULL;
+                    }
                 |   identifier ASSIGN initval
                     {
                         $$ = new VarDef;
@@ -225,21 +231,25 @@ funcdef         :   VOID identifier LPAREN RPAREN block
                     {
                         $$ = new FuncDef;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$5;
                     }
                 |   INT identifier LPAREN RPAREN block
                     {
                         $$ = new FuncDef;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$5;
                     }
                 |   VOID identifier LPAREN funcfparams RPAREN block
                     {
                         $$ = $4;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$6;
                     }
                 |   INT identifier LPAREN funcfparams RPAREN block
                     {
                         $$ = $4;
                         ((FuncDef*)$$)->ident = (Identifier*)$2;
+                        ((FuncDef*)$$)->body = (Block*)$6;
                     }
                 ;
 
@@ -262,7 +272,7 @@ funcfparam      :   INT identifier
                     }
                 |   INT identifier arr_funcfparam
                     {
-                        $$ = $2;
+                        $$ = $3;
                         ((FuncFParam*)$$)->ident = (Identifier*)$2;
                     }
                 ;
@@ -285,6 +295,10 @@ arr_funcfparam  :   LBRACK RBRACK
 block           :   LBPAREN blockitems RBPAREN
                     {
                         $$ = $2;
+                    }
+                |   LBPAREN RBPAREN
+                    {
+                        $$ = new Block;
                     }
                 ;
 
@@ -332,6 +346,7 @@ stmt            :   lval ASSIGN exp SEMI
                         $$ = new IfStmt;
                         ((IfStmt*)$$)->c = (Cond*)$3;
                         ((IfStmt*)$$)->then_body = (Stmt*)$5;
+                        ((IfStmt*)$$)->else_body = NULL;
                     }
                 |   IF LPAREN cond RPAREN stmt ELSE stmt
                     {
@@ -369,10 +384,10 @@ stmt            :   lval ASSIGN exp SEMI
 
 
 
-exp             :   addexp
+exp             :   lorexp
                     {
                         $$ = new Exp;
-                        ((Exp*)$$)->ae = (AddExp*)$1;
+                        ((Exp*)$$)->ae = (LOrExp*)$1;
                     }
                 ;
 
@@ -591,10 +606,10 @@ lorexp          :   lorexp OR landexp
                     }
                 ;
 
-constexp        :   addexp
+constexp        :   lorexp
                     {
                         $$ = new ConstExp;
-                        ((ConstExp*)$$)->ae = (AddExp*)$1;
+                        ((ConstExp*)$$)->ae = (LOrExp*)$1;
                     }
                 ;
 
