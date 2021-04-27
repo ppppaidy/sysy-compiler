@@ -79,9 +79,10 @@ int main(int argc, char* argv[]){
         fclose(source);
         strcpy(output_filename, filename);
         strcat(output_filename, ".eeyore");
-        listing = fopen(output_filename, "w");
+        listing = fopen(filename_o, "w");
         EeyoreGenner(listing).printFinal(ast_root);
         fclose(listing);
+
     }
 
     //eeyore to tigger
