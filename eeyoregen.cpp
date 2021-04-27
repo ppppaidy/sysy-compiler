@@ -574,6 +574,7 @@ int EeyoreGenner::printPrimaryExp(PrimaryExp* node){
 
 int EeyoreGenner::printFuncExp(FuncExp* node){
     printf("FuncExp\n");
+    exit(10);
     add_var_to_now_func(node->NodeID);
     std::string code_now;
     for(size_t i = 0; i < node->params.size(); i++){
