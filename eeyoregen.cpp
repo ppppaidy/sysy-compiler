@@ -168,12 +168,14 @@ int EeyoreGenner::printConstDef(ConstDef* node){
         }
     }
     else{
+        return_val = 1;
         var_arr_size[node->NodeID] = 4;
         for(size_t i = 0; i < node->arr.size(); i++){
             int t = print(node->arr[i]);
             var_arr_size_vec[node->NodeID].push_back(t);
             var_arr_size[node->NodeID] *= t;
         }
+        return_val = 0;
         std::string code_now = "";
         code_now = code_now + "t1 = 0\n";
         code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
@@ -268,12 +270,14 @@ int EeyoreGenner::printVarDef(VarDef* node){
         }
     }
     else{
+        return_val = 1;
         var_arr_size[node->NodeID] = 4;
         for(size_t i = 0; i < node->arr.size(); i++){
             int t = print(node->arr[i]);
             var_arr_size_vec[node->NodeID].push_back(t);
             var_arr_size[node->NodeID] *= t;
         }
+        return_val = 0;
         std::string code_now = "";
         code_now = code_now + "t1 = 0\n";
         code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
@@ -370,11 +374,13 @@ int EeyoreGenner::printFuncFParam(FuncFParam* node){
     if(node->ce.size() == 0) return node->NodeID;
     var_arr_size[node->NodeID] = 4;
     var_arr_size_vec[node->NodeID].push_back(1);
+    return_val = 1;
     for(size_t i = 1; i < node->ce.size(); i++){
         int t = print(node->ce[i]);
         var_arr_size[node->NodeID] *= t;
         var_arr_size_vec[node->NodeID].push_back(t);
     }
+    return_val = 0;
     return node->NodeID;
 }
 
@@ -764,8 +770,6 @@ int EeyoreGenner::printLOrExp(LOrExp* node){
 
 int EeyoreGenner::printConstExp(ConstExp* node){
     printf("ConstExp\n");
-    return_val = 1;
     int t = print(node->ae);
-    return_val = 0;
     return t;
 }
