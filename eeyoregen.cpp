@@ -584,6 +584,14 @@ int EeyoreGenner::printFuncExp(FuncExp* node){
     || node->ident->id_name == "putarray"){
         code_now = code_now + "call f_" + node->ident->id_name + "\n";
     }
+    else if(node->ident->id_name == "starttime"){
+        code_now = code_now + "param 1\n";
+        code_now = code_now + "call f__sysy_starttime\n";
+    }
+    else if(node->ident->id_name == "stoptime"){
+        code_now = code_now + "param 2\n";
+        code_now = code_now + "call f__sysy_stoptime\n";
+    }
     else{
         code_now = code_now + gen_var(node->NodeID) + " = call f_" 
             + node->ident->id_name + "\n";
