@@ -535,10 +535,10 @@ int EeyoreGenner::printLVal(LVal* node){
         code_string = "";
         int t = print(node->e[i]);
         code_now = code_now + code_string;
-        code_now = code_now + gen_var(t) + " = " + gen_var(t) + " * "
+        code_now = code_now + "t1 = " + gen_var(t) + " * "
             + std::to_string(arr_size) + "\n";
         code_now = code_now + gen_var(node->NodeID) + " = " + gen_var(node->NodeID)
-            + " + " + gen_var(t) + "\n";
+            + " + t1" + "\n";
     }
     return_is_arr = 1;
     if(!now_in_assign_l_store && node->e.size() == var_arr_size_vec[id].size()){
