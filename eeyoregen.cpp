@@ -691,6 +691,16 @@ int EeyoreGenner::printAddExp(AddExp* node){
 
 int EeyoreGenner::printRelExp(RelExp* node){
     printf("RelExp\n");
+    if(return_val){
+        int tmp = print(node->ae[0]);
+        for(size_t i = 1; i < node->ae.size(); i++){
+            if(node->ops[i-1] == "<") tmp = tmp < print(node->ae[i]);
+            if(node->ops[i-1] == ">") tmp = tmp > print(node->ae[i]);
+            if(node->ops[i-1] == "<=") tmp = tmp <= print(node->ae[i]);
+            if(node->ops[i-1] == ">=") tmp = tmp >= print(node->ae[i]);
+        }
+        return tmp;
+    }
     if(node->ae.size() == 1) return print(node->ae[0]);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
@@ -717,6 +727,14 @@ int EeyoreGenner::printRelExp(RelExp* node){
 
 int EeyoreGenner::printEqExp(EqExp* node){
     printf("EqExp\n");
+    if(return_val){
+        int tmp = print(node->re[0]);
+        for(size_t i = 1; i < node->re.size(); i++){
+            if(node->ops[i-1] == "==") tmp = tmp == print(node->re[i]);
+            if(node->ops[i-1] == "!=") tmp = tmp != print(node->re[i]);
+        }
+        return tmp;
+    }
     if(node->re.size() == 1) return print(node->re[0]);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
@@ -743,6 +761,13 @@ int EeyoreGenner::printEqExp(EqExp* node){
 
 int EeyoreGenner::printLAndExp(LAndExp* node){
     printf("LAndExp\n");
+    if(return_val){
+        int tmp = print(node->ee[0]);
+        for(size_t i = 1; i < node->ee.size(); i++){
+            tmp = tmp && print(node->ee[i]);
+        }
+        return tmp;
+    }
     if(node->ee.size() == 1) return print(node->ee[0]);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
@@ -765,6 +790,13 @@ int EeyoreGenner::printLAndExp(LAndExp* node){
 
 int EeyoreGenner::printLOrExp(LOrExp* node){
     printf("LOrExp\n");
+    if(return_val){
+        int tmp = print(node->lae[0]);
+        for(size_t i = 1; i < node->lae.size(); i++){
+            tmp = tmp || print(node->lae[i]);
+        }
+        return tmp;
+    }
     if(node->lae.size() == 1) return print(node->lae[0]);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
