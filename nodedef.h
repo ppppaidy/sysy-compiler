@@ -191,7 +191,7 @@ class ReturnStmt : public Stmt{
 class Exp : public NodeBase{
     public:
         Exp() {type_name = "Exp";}
-        AddExp* ae;
+        LOrExp* ae;
 };
 
 class Cond : public NodeBase{
