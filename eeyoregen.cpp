@@ -769,7 +769,6 @@ int EeyoreGenner::printLAndExp(LAndExp* node){
         return tmp;
     }
     if(node->ee.size() == 1) return print(node->ee[0]);
-    exit(10);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
     code_now = gen_var(node->NodeID) + " = 1\n";
@@ -799,6 +798,7 @@ int EeyoreGenner::printLOrExp(LOrExp* node){
         return tmp;
     }
     if(node->lae.size() == 1) return print(node->lae[0]);
+    exit(10);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
     code_now = gen_var(node->NodeID) + " = 0\n";
