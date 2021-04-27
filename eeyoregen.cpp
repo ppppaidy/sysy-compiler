@@ -158,8 +158,10 @@ int EeyoreGenner::printConstDef(ConstDef* node){
     //print(node->ident);
     if(node->arr.size() == 0){
         code_string = "";
+        return_val = 1;
         int t = print(node->civ);
         const_vars_val[node->NodeID] = t;
+        return_val = 0;
         code_string = code_string + gen_var(node->NodeID) 
             + " = " + std::to_string(t) + "\n";
         if(func_now == compunit_id){
