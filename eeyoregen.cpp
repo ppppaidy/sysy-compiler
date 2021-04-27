@@ -540,7 +540,6 @@ int EeyoreGenner::printLVal(LVal* node){
         if(return_val) return printIdentifier(node->ident);
         return id;
     }
-    if(return_val) while(1);
     int now_in_assign_l_store = now_in_assign_l;
     now_in_assign_l = 0;
     add_var_to_now_func(node->NodeID);
