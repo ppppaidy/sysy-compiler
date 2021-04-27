@@ -702,7 +702,6 @@ int EeyoreGenner::printRelExp(RelExp* node){
         return tmp;
     }
     if(node->ae.size() == 1) return print(node->ae[0]);
-    exit(10);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
     code_string = "";
