@@ -60,7 +60,7 @@ annotation              (\/\/[^\n]*)|(\/\*([^\*^\/]*|[\*^\/*]*|[^\**\/]*)*\*\/)
 {identifier}            {return ID;}
 {whitespace}            {}
 {annotation}            {}
-.                       {return ERROR;}
+.                       {}
 %%
 
 int getToken(){
