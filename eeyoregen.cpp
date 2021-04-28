@@ -119,7 +119,6 @@ int EeyoreGenner::printCompUnit(CompUnit* node){
         if(((FuncDef*)(node->nb[i]))->ident->id_name != "main") continue;
         main_id = ((FuncDef*)(node->nb[i]))->NodeID;
     }
-    if(node->nb.size() == 1) exit(node->nb.size());
     printf("func : %d compunit : %d main : %d\n", func_now, compunit_id, main_id);
     for(size_t i = 0; i < node->nb.size(); i++){
         if(node->nb[i]->NodeID == main_id) continue;
@@ -261,6 +260,7 @@ int EeyoreGenner::printVarDef(VarDef* node){
     printf("VarDef\n");
     printf("%s %d %d\n", 
         node->ident->id_name.c_str(), func_now, block_stack[block_stack.size()-1]);
+    if(node->ident->id_name == "main") exit(10);
     str2vars[node->ident->id_name].push_back(node->NodeID);
     vars2str[node->NodeID] = node->ident->id_name;
     vars_on_func[func_now].push_back(node->NodeID);
