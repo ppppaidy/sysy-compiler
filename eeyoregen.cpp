@@ -113,11 +113,13 @@ int EeyoreGenner::printCompUnit(CompUnit* node){
     init_on_main = "";
     block_stack.push_back(compunit_id);
     add_var_to_now_func(1);
+    main_id = 0;
     for(size_t i = 0; i < node->nb.size(); i++){
         if(node->nb[i]->type_name != "FuncDef") continue;
         if(((FuncDef*)(node->nb[i]))->ident->id_name != "main") continue;
         main_id = ((FuncDef*)(node->nb[i]))->NodeID;
     }
+    if(main_id == 0) exit(10);
     printf("func : %d compunit : %d main : %d\n", func_now, compunit_id, main_id);
     for(size_t i = 0; i < node->nb.size(); i++){
         if(node->nb[i]->NodeID == main_id) continue;
@@ -347,7 +349,6 @@ int EeyoreGenner::printInitVal(InitVal* node){
 
 int EeyoreGenner::printFuncDef(FuncDef* node){
     printf("FuncDef\n");
-    if(node->ident->id_name == "main") exit(10);
     int func_pre = func_now;
     func_now = node->NodeID;
     //print(node->ident);
