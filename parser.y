@@ -42,6 +42,7 @@ compunit        :   compunit decl
 
                 |   compunit funcdef
                     {
+                        exit(10);
                         $$ = $1;
                         ((CompUnit*)$$)->nb.push_back((NodeBase*)$2);
                     }
