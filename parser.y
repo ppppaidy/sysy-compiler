@@ -636,6 +636,7 @@ number          :   NUM
 
 int yyerror(std::string message){
     std::cerr<<message<<std::endl;
+    if(message == "syntax error") exit(11);
     exit(10);
     return 0;
 }
