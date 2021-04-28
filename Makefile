@@ -12,8 +12,7 @@ CFLAGS = -Wno-register -O2 -lm -std=c++17
 OBJS = main.o parser.tab.o lex.yy.o eeyoregen.o
 
 compiler: $(OBJS)
-	-$(CC) $(CFLAGS) $(OBJS) -o compiler
-	-rm -rf $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o compiler
 
 main.o: main.cpp globals.h scan.h globals.h nodedef.h parse.h eeyoregen.h
 	$(CC) $(CFLAGS) -c main.cpp
@@ -36,3 +35,6 @@ parse.h: nodedef.h
 clean:
 	-rm -rf compiler
 	-rm -rf $(OBJS)
+	-rm -rf lex.yy.cpp
+	-rm -rf parser.tab.cpp
+	-rm -rf parser.tab.hpp
