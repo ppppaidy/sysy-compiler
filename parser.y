@@ -48,7 +48,6 @@ compunit        :   compunit decl
                 
                 |   decl
                     {
-                        exit(10);
                         $$ = new CompUnit;
                         ((CompUnit*)$$)->nb.push_back((NodeBase*)$1);
                     }
@@ -637,6 +636,7 @@ number          :   NUM
 
 int yyerror(std::string message){
     std::cerr<<message<<std::endl;
+    exit(10);
     return 0;
 }
 
