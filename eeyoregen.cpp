@@ -62,7 +62,6 @@ void EeyoreGenner::add_var_to_now_func(int id){
 
 int EeyoreGenner::printIdentifier(Identifier* node){
     printf("Identifier : %s\n", node->id_name.c_str());
-    if(node->id_name == "main") exit(1);
     if(return_val){
         return const_vars_val[str2vars[node->id_name][str2vars[node->id_name].size()-1]];
     }
