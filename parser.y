@@ -143,7 +143,7 @@ constinitvals   :   constinitvals COMMA constinitval
 
 
 vardecl         :   INT vardefs SEMI
-                    {$$ = $2;}
+                    {exit(5);$$ = $2;}
                 ;
 
 vardefs         :   vardefs COMMA vardef
@@ -152,7 +152,7 @@ vardefs         :   vardefs COMMA vardef
                         ((VarDecl*)$$)->vd.push_back((VarDef*)$3);
                     }
                 |   vardef
-                    {exit(5);
+                    {
                         $$ = new VarDecl;
                         ((VarDecl*)$$)->vd.push_back((VarDef*)$1);
                     }
