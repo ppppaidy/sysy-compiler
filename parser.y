@@ -31,7 +31,7 @@ int yyerror(std::string);
 %%
 
 program         :   compunit
-                    {exit(5);savedTree = $1;}
+                    {savedTree = $1;}
                 ;
 
 compunit        :   compunit decl
