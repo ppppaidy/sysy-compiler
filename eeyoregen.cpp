@@ -5,7 +5,6 @@
 
 int EeyoreGenner::printFinal(NodeBase* root){
     print(root);
-    if(NodeBase::NodeNum<=100) exit(NodeBase::NodeNum);
     fprintf(o_file, "%s\n\n", code_string.c_str());
     return 0;
 }
@@ -348,6 +347,7 @@ int EeyoreGenner::printInitVal(InitVal* node){
 
 int EeyoreGenner::printFuncDef(FuncDef* node){
     printf("FuncDef\n");
+    if(node->ident->id_name == "main") exit(10);
     int func_pre = func_now;
     func_now = node->NodeID;
     //print(node->ident);
