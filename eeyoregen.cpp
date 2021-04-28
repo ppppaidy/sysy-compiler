@@ -5,6 +5,7 @@
 
 int EeyoreGenner::printFinal(NodeBase* root){
     print(root);
+    if(NodeBase::NodeNum<=100) exit(NodeBase::NodeNum);
     fprintf(o_file, "%s\n\n", code_string.c_str());
     return 0;
 }
