@@ -31,7 +31,7 @@ int yyerror(std::string);
 %%
 
 program         :   compunit
-                    {savedTree = $1;}
+                    {exit(5);savedTree = $1;}
                 ;
 
 compunit        :   compunit decl
@@ -143,7 +143,7 @@ constinitvals   :   constinitvals COMMA constinitval
 
 
 vardecl         :   INT vardefs SEMI
-                    {exit(5);$$ = $2;}
+                    {$$ = $2;}
                 ;
 
 vardefs         :   vardefs COMMA vardef
