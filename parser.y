@@ -282,10 +282,20 @@ arr_funcfparam  :   LBRACK RBRACK
                         $$ = new FuncFParam;
                         ((FuncFParam*)$$)->ce.push_back(NULL);
                     }
+                |   LBRACK constexp RBRACK
+                    {
+                        $$ = new FuncFParam;
+                        ((FuncFParam*)$$)->ce.push_back((ConstExp*)$2);
+                    }
                 |   arr_funcfparam LBRACK constexp RBRACK
                     {
                         $$ = $1;
                         ((FuncFParam*)$$)->ce.push_back((ConstExp*)$3);
+                    }
+                |   arr_funcfparam LBRACK RBRACK
+                    {
+                        $$ = $1;
+                        ((FuncFParam*)$$)->ce.push_back(NULL);
                     }
                 ;
             
