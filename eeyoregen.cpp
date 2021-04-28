@@ -426,6 +426,7 @@ int EeyoreGenner::printStmt(Stmt* node){
 
 int EeyoreGenner::printAssignStmt(AssignStmt* node){
     printf("AssignStmt\n");
+    exit(10);
     std::string code_now = "";
     code_string = "";
     now_in_assign_l = 1;
