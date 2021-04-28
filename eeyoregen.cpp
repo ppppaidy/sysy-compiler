@@ -635,7 +635,6 @@ int EeyoreGenner::printMulExp(MulExp* node){
         return tmp;
     }
     if(node->ue.size() == 1) return print(node->ue[0]);
-    exit(10);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
     code_string = "";
@@ -670,6 +669,7 @@ int EeyoreGenner::printAddExp(AddExp* node){
         return tmp;
     }
     if(node->me.size() == 1) return print(node->me[0]);
+    exit(10);
     add_var_to_now_func(node->NodeID);
     std::string code_now = "";
     code_string = "";
