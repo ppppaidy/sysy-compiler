@@ -113,6 +113,7 @@ int EeyoreGenner::printCompUnit(CompUnit* node){
     init_on_main = "";
     block_stack.push_back(compunit_id);
     add_var_to_now_func(1);
+    main_id = 0;
     for(size_t i = 0; i < node->nb.size(); i++){
         if(node->nb[i]->type_name != "FuncDef") continue;
         if(((FuncDef*)(node->nb[i]))->ident->id_name != "main") continue;

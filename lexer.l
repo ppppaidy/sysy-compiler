@@ -19,7 +19,7 @@ octal_const             "0"{octal_digit}*
 hexdecimal_prefix       "0x"|"0X"
 hexdecimal_const        {hexdecimal_prefix}{hexdecimal_digit}+
 integer_const           {decimal_const}|{octal_const}|{hexdecimal_const}
-whitespace              [ \t\n]
+whitespace              [ \r\t\n]
 annotation              (\/\/[^\n]*)|(\/\*([^\*^\/]*|[\*^\/*]*|[^\**\/]*)*\*\/)
 
 
@@ -33,8 +33,8 @@ annotation              (\/\/[^\n]*)|(\/\*([^\*^\/]*|[\*^\/*]*|[^\**\/]*)*\*\/)
 "const"                 {return CONST;}
 "int"                   {return INT;}
 "void"                  {return VOID;}
-"="                     {return ASSIGN;}
 "=="                    {return EQ;}
+"="                     {return ASSIGN;}
 "!="                    {return NEQ;}
 "<"                     {return LT;}
 ">"                     {return GT;}
