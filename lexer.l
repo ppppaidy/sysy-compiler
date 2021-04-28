@@ -71,7 +71,7 @@ int getToken(){
         yyin = source;
     }
     currentToken = yylex();
-    if(strcmp(yytext, ";") == 0) exit(10);
+    if(currentToken == ID) exit(10);
     if(currentToken != ENDFILE){
         strncpy(tokenString, yytext, MAXTOKENLEN);
         printf("%d %s\n", (int)currentToken, tokenString);
