@@ -33,8 +33,8 @@ annotation              (\/\/[^\n]*)|(\/\*([^\*^\/]*|[\*^\/*]*|[^\**\/]*)*\*\/)
 "const"                 {return CONST;}
 "int"                   {return INT;}
 "void"                  {return VOID;}
-"="                     {return ASSIGN;}
 "=="                    {return EQ;}
+"="                     {return ASSIGN;}
 "!="                    {return NEQ;}
 "<"                     {return LT;}
 ">"                     {return GT;}
