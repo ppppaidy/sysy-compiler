@@ -36,13 +36,13 @@ program         :   compunit
 
 compunit        :   compunit decl
                     {
+                        exit(10);
                         $$ = $1;
                         ((CompUnit*)$$)->nb.push_back((NodeBase*)$2);
                     }
 
                 |   compunit funcdef
                     {
-                        exit(10);
                         $$ = $1;
                         ((CompUnit*)$$)->nb.push_back((NodeBase*)$2);
                     }
