@@ -292,14 +292,16 @@ int EeyoreGenner::printVarDef(VarDef* node){
         }
         return_val = 0;
         std::string code_now = "";
-        code_now = code_now + "t1 = 0\n";
-        code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
-        code_now = code_now + "if t1 == " + std::to_string(var_arr_size[node->NodeID])
-            + " goto l" + std::to_string(node->NodeID) + "0\n";
-        code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
-        code_now = code_now + "t1 = t1 + 4\n";
-        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
-        code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+        if(node->iv != NULL){
+            code_now = code_now + "t1 = 0\n";
+            code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
+            code_now = code_now + "if t1 == " + std::to_string(var_arr_size[node->NodeID])
+                + " goto l" + std::to_string(node->NodeID) + "0\n";
+            code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
+            code_now = code_now + "t1 = t1 + 4\n";
+            code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
+            code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+        }
         now_arr = node->NodeID;
         now_arr_step = 4;
         now_arr_size = var_arr_size[now_arr];
@@ -577,11 +579,15 @@ int EeyoreGenner::printFuncExp(FuncExp* node){
     printf("FuncExp\n");
     add_var_to_now_func(node->NodeID);
     std::string code_now;
+    std::vector<int> tt;
     for(size_t i = 0; i < node->params.size(); i++){
         code_string = "";
         int t = print(node->params[i]);
         code_now = code_now + code_string;
-        code_now = code_now + "param " + gen_var(t) + "\n";
+        tt.push_back(t);
+    }
+    for(size_t i = 0; i < node->params.size(); i++){
+        code_now = code_now + "param " + gen_var(tt[i]) + "\n";
     }
     if(node->ident->id_name == "putint"
     || node->ident->id_name == "putch"
@@ -615,7 +621,7 @@ int EeyoreGenner::printUnaryExp(UnaryExp* node){
     add_var_to_now_func(node->NodeID);
     int t = print(node->ue);
     code_string = code_string
-        + gen_var(node->NodeID) + " = " + node->uo + gen_var(t) + "\n";
+        + gen_var(node->NodeID) + " = " + node->uo + " " + gen_var(t) + "\n";
     return node->NodeID;
 }
 
