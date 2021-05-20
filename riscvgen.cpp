@@ -216,7 +216,7 @@ int RiscvGenner::genRiscvCode(){
                 }
                 else if(op == "&&"){
                     funccode = funccode + "  snez\t\t" + reg1 + ", " + reg2 + "\n";
-                    funccode = funccode + "  snez\t\t t0, " + reg3 + "\n";
+                    funccode = funccode + "  snez\t\tt0, " + reg3 + "\n";
                     funccode = funccode + "  and\t\t" + reg1 + ", " + reg1 + ", t0\n";
                 }
                 else if(op == "||"){

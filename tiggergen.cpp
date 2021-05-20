@@ -94,9 +94,9 @@ int TiggerGenner::genTiggerCode(){
                 inside_func[eeyorecode[pos][1]] = 1;
             }
             else{
-                funccode = funccode + "loadaddr " + std::to_string(stack_size/4) + "s1\n";
+                funccode = funccode + "loadaddr " + std::to_string(stack_size/4) + " s1\n";
                 stack_size += atoi(eeyorecode[pos][1].c_str());
-                funccode = funccode + "loadaddr " + std::to_string(stack_size/4) + "s0\n";
+                funccode = funccode + "loadaddr " + std::to_string(stack_size/4) + " s0\n";
                 funccode = funccode + "s0[0] = s1\n";
                 var_addr[eeyorecode[pos][2]] = stack_size / 4;
                 inside_func[eeyorecode[pos][2]] = 1;
