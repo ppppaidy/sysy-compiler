@@ -292,14 +292,16 @@ int EeyoreGenner::printVarDef(VarDef* node){
         }
         return_val = 0;
         std::string code_now = "";
-        code_now = code_now + "t1 = 0\n";
-        code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
-        code_now = code_now + "if t1 == " + std::to_string(var_arr_size[node->NodeID])
-            + " goto l" + std::to_string(node->NodeID) + "0\n";
-        code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
-        code_now = code_now + "t1 = t1 + 4\n";
-        code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
-        code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+        if(node->iv != NULL){
+            code_now = code_now + "t1 = 0\n";
+            code_now = code_now + "l" + std::to_string(node->NodeID) + "1:\n";
+            code_now = code_now + "if t1 == " + std::to_string(var_arr_size[node->NodeID])
+                + " goto l" + std::to_string(node->NodeID) + "0\n";
+            code_now = code_now + gen_var(node->NodeID) + "[t1] = 0\n";
+            code_now = code_now + "t1 = t1 + 4\n";
+            code_now = code_now + "goto l" + std::to_string(node->NodeID) + "1\n";
+            code_now = code_now + "l" + std::to_string(node->NodeID) + "0:\n";
+        }
         now_arr = node->NodeID;
         now_arr_step = 4;
         now_arr_size = var_arr_size[now_arr];
