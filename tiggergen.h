@@ -26,6 +26,7 @@ class TiggerGenner{
 
         std::string tiggercode;
         std::string funccode;
+        std::string maincode;
 
         //eeyore code
         //line is dimension 1

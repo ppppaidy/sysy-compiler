@@ -27,6 +27,7 @@ int TiggerGenner::getEeyoreCode(){
 
 int TiggerGenner::genTiggerCode(){
     tiggercode = "";
+    maincode = "";
     int pos = 0;
     global_var_num = 0;
     for(; pos < eeyorecode.size(); pos++){
@@ -36,17 +37,22 @@ int TiggerGenner::genTiggerCode(){
             break;
         }
         if(eeyorecode[pos][1][0] == 't' || eeyorecode[pos][1][0] == 'T'){
-            global_var_num++;
             var_addr[eeyorecode[pos][1]] = global_var_num;
             inside_func[eeyorecode[pos][1]] = 0;
             tiggercode = tiggercode + "v" + std::to_string(global_var_num) + " = 0\n";
+            global_var_num++;
         }
         else{
+            tiggercode = tiggercode + "v" + std::to_string(global_var_num)
+                + " = malloc " + eeyorecode[pos][1] + "\n";
             global_var_num++;
             var_addr[eeyorecode[pos][2]] = global_var_num;
             inside_func[eeyorecode[pos][2]] = 0;
-            tiggercode = tiggercode + "v" + std::to_string(global_var_num)
-                + " = malloc " + eeyorecode[pos][1] + "\n";
+            tiggercode = tiggercode + "v" + std::to_string(global_var_num) + " = 0\n";
+            maincode = maincode + "loadaddr v" + std::to_string(global_var_num) + " s0\n";
+            maincode = maincode + "loadaddr v" + std::to_string(global_var_num-1) + " s1\n";
+            maincode = maincode + "s0[0] = s1\n";
+            global_var_num++;
         }
     }
     for(; pos < eeyorecode.size(); pos++){
@@ -68,8 +74,10 @@ int TiggerGenner::genTiggerCode(){
             }
         }
         else if(eeyorecode[pos][0] == "end"){
+            if(func_name == "f_main")
+                funccode = maincode + funccode ;
             funccode = func_name + " " + param_num + " [" 
-                + std::to_string(stack_size) + "]\n" + funccode;
+                + std::to_string(stack_size/4) + "]\n" + funccode;
             funccode = funccode + "end " + func_name + "\n\n";
             tiggercode = tiggercode + funccode;
         }
@@ -81,14 +89,18 @@ int TiggerGenner::genTiggerCode(){
         }
         else if(eeyorecode[pos][0] == "var"){
             if(eeyorecode[pos][1][0] == 't' || eeyorecode[pos][1][0] == 'T'){
-                stack_size += 4;
                 var_addr[eeyorecode[pos][1]] = stack_size / 4;
+                stack_size += 4;
                 inside_func[eeyorecode[pos][1]] = 1;
             }
             else{
-                var_addr[eeyorecode[pos][2]] = stack_size / 4 + 1;
-                inside_func[eeyorecode[pos][2]] = 1;
+                funccode = funccode + "loadaddr " + std::to_string(stack_size/4) + "s1\n";
                 stack_size += atoi(eeyorecode[pos][1].c_str());
+                funccode = funccode + "loadaddr " + std::to_string(stack_size/4) + "s0\n";
+                funccode = funccode + "s0[0] = s1\n";
+                var_addr[eeyorecode[pos][2]] = stack_size / 4;
+                inside_func[eeyorecode[pos][2]] = 1;
+                stack_size += 4;
             }
         }
         else if(eeyorecode[pos][0] == "param"){
@@ -185,10 +197,10 @@ int TiggerGenner::genTiggerCode(){
                 if(store_var_name[0] == 'p' || store_var_name[0] == 't' 
                 || store_var_name[0] == 'T'){
                     if(inside_func[store_var_name])
-                        funccode = funccode + "loadaddr " 
+                        funccode = funccode + "load " 
                             + std::to_string(var_addr[store_var_name]) + " s1" + "\n";
                     else
-                        funccode = funccode + "loadaddr v" 
+                        funccode = funccode + "load v" 
                             + std::to_string(var_addr[store_var_name]) + " s1" + "\n";
                 }
                 else{
@@ -218,10 +230,10 @@ int TiggerGenner::genTiggerCode(){
                 if(store_var_name[0] == 'p' || store_var_name[0] == 't' 
                 || store_var_name[0] == 'T'){
                     if(inside_func[store_var_name])
-                        funccode = funccode + "loadaddr " 
+                        funccode = funccode + "load " 
                             + std::to_string(var_addr[store_var_name]) + " s1" + "\n";
                     else
-                        funccode = funccode + "loadaddr v" 
+                        funccode = funccode + "load v" 
                             + std::to_string(var_addr[store_var_name]) + " s1" + "\n";
                 }
                 else{
@@ -289,7 +301,8 @@ int TiggerGenner::genTiggerCode(){
                 else{
                     funccode = funccode + "s1 = " + eeyorecode[pos][3] + "\n";
                 }
-                funccode = funccode + "s0[0] = " + eeyorecode[pos][2] +" s1\n";
+                funccode = funccode + "s3 = " + eeyorecode[pos][2] +" s1\n";
+                funccode = funccode + "s0[0] = s3\n";
             }
             else{
                 if(inside_func[eeyorecode[pos][0]])
@@ -322,7 +335,8 @@ int TiggerGenner::genTiggerCode(){
                 else{
                     funccode = funccode + "s2 = " + eeyorecode[pos][4] + "\n";
                 }
-                funccode = funccode + "s0[0] = s1 " + eeyorecode[pos][3] + " s2\n";
+                funccode = funccode + "s3 = s1 " + eeyorecode[pos][3] + " s2\n";
+                funccode = funccode + "s0[0] = s3\n";
             }
         }
     }
