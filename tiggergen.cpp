@@ -45,7 +45,7 @@ int TiggerGenner::genTiggerCode(){
         else{
             int size = atoi(eeyorecode[pos][1].c_str());
             tiggercode = tiggercode + "v" + std::to_string(global_var_num)
-                + " = malloc " + std::to_string(size + 16) + "\n";
+                + " = malloc " + std::to_string(size) + "\n";
             global_var_num++;
             var_addr[eeyorecode[pos][2]] = global_var_num;
             inside_func[eeyorecode[pos][2]] = 0;
