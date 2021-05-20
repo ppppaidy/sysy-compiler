@@ -214,7 +214,7 @@ int RiscvGenner::genRiscvCode(){
             else if(tiggercode[pos].size() == 3){
                 std::string reg1 = tiggercode[pos][0];
                 std::string reg2 = tiggercode[pos][2];
-                if(reg2[0]<'0' || reg2[0]>'9')
+                if((reg2[0]<'0' || reg2[0]>'9') && reg2[0] != '-')
                     funccode = funccode + "  mv\t\t" + reg1 + ", " + reg2 + "\n";
                 else
                     funccode = funccode + "  li\t\t" + reg1 + ", " + reg2 + "\n";
@@ -233,7 +233,7 @@ int RiscvGenner::genRiscvCode(){
                 std::string reg2 = tiggercode[pos][2];
                 std::string reg3 = tiggercode[pos][4];
                 std::string op = tiggercode[pos][3];
-                if(reg3[0] >='0' && reg3[0]<='9'){
+                if((reg3[0] >='0' && reg3[0]<='9') || reg3[0] == '-'){
                     funccode = funccode + "  li\t\tt0, " + reg3 + "\n";
                     reg3 = "t0";
                 }
