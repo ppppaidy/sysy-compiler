@@ -9,7 +9,7 @@ YACC = bison
 
 CFLAGS = -Wno-register -O2 -lm -std=c++17
 
-OBJS = main.o parser.tab.o lex.yy.o eeyoregen.o tiggergen.o
+OBJS = main.o parser.tab.o lex.yy.o eeyoregen.o tiggergen.o riscvgen.o
 
 compiler: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o compiler
@@ -30,6 +30,9 @@ eeyoregen.o: eeyoregen.cpp eeyoregen.h
 
 tiggergen.o: tiggergen.cpp tiggergen.h
 	$(CC) $(CFLAGS) -c tiggergen.cpp
+
+riscvgen.o: riscvgen.cpp riscvgen.h
+	$(CC) $(CFLAGS) -c riscvgen.cpp
 
 eeyoregen.h: nodedef.h
 

@@ -7,6 +7,7 @@
 #include "parse.h"
 #include "eeyoregen.h"
 #include "tiggergen.h"
+#include "riscvgen.h"
 
 int NodeBase::NodeNum = 2;
 
@@ -102,7 +103,9 @@ int main(int argc, char* argv[]){
 
     //tigger to riscv
     if(tigger2riscv == 1){
-
+        strcpy(input_filename, filename);
+        strcat(input_filename, ".tigger");
+        RiscvGenner(input_filename, filename_o).printFinal();
     }
     
     return 0;
