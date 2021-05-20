@@ -6,6 +6,7 @@
 #include "nodedef.h"
 #include "parse.h"
 #include "eeyoregen.h"
+#include "tiggergen.h"
 
 int NodeBase::NodeNum = 2;
 
@@ -79,17 +80,24 @@ int main(int argc, char* argv[]){
         fclose(source);
         strcpy(output_filename, filename);
         strcat(output_filename, ".eeyore");
-        listing = fopen(filename_o, "w");
-        EeyoreGenner(listing).printFinal(ast_root);
-        fclose(listing);
-        listing = fopen(output_filename, "w");
+        if(eeyore2tigger == 0)
+            listing = fopen(filename_o, "w");
+        else
+            listing = fopen(output_filename, "w");
         EeyoreGenner(listing).printFinal(ast_root);
         fclose(listing);
     }
 
     //eeyore to tigger
     if(eeyore2tigger == 1){
-
+        strcpy(input_filename, filename);
+        strcat(input_filename, ".eeyore");
+        strcpy(output_filename, filename);
+        strcat(output_filename, ".tigger");
+        if(tigger2riscv == 0)
+            TiggerGenner(input_filename, filename_o).printFinal();
+        else
+            TiggerGenner(input_filename, output_filename).printFinal();
     }
 
     //tigger to riscv
