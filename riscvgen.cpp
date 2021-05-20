@@ -42,8 +42,18 @@ int RiscvGenner::genRiscvCode(){
                 funccode = funccode + funcname + ":\n";
                 STK = atoi(tiggercode[pos][2].substr(1,tiggercode[pos][2].length()-2).c_str());
                 STK = (STK/4+1)*16;
-                funccode = funccode + "  addi\t\tsp, sp, -" + std::to_string(STK) + "\n";
-                funccode = funccode + "  sw\t\tra, " + std::to_string(STK-4) + "(sp)\n";
+                if(-STK >= -2048 && -STK <= 2047)
+                    funccode = funccode + "  addi\t\tsp, sp, -" + std::to_string(STK) + "\n";
+                else{
+                    funccode = funccode + "  li\t\tt0, -" + std::to_string(STK) + "\n";
+                    funccode = funccode + "  add\t\tsp, sp, t0\n";
+                }
+                if(STK-4 >= -2048 && STK-4 <= 2047)
+                    funccode = funccode + "  sw\t\tra, " + std::to_string(STK-4) + "(sp)\n";
+                else{
+                    funccode = funccode + "  li\t\tt0, " + std::to_string(STK-4) + "\n";
+                    funccode = funccode + "  sw\t\tra, t0(sp)\n";
+                }
                 funccodetail = "  .size\t\t" + funcname + ", .-" + funcname + "\n\n";
             }
             else if(tiggercode[pos][2] == "malloc"){
@@ -128,8 +138,18 @@ int RiscvGenner::genRiscvCode(){
                 funccode = funccode + "  call\t\t" + tiggercode[pos][1].substr(2) + "\n";
             }
             else if(tiggercode[pos][0] == "return"){
-                funccode = funccode + "  lw\t\tra, " + std::to_string(STK-4) + "(sp)\n";
-                funccode = funccode + "  addi\t\tsp, sp, " + std::to_string(STK) + "\n";
+                if(STK-4 >= -2048 && STK-4 <= 2047)
+                    funccode = funccode + "  lw\t\tra, " + std::to_string(STK-4) + "(sp)\n";
+                else{
+                    funccode = funccode + "  li\t\tt0, " + std::to_string(STK-4) + "\n";
+                    funccode = funccode + "  lw\t\tra, t0(sp)\n";
+                }
+                if(STK >= -2048 && STK <= 2047)
+                    funccode = funccode + "  addi\t\tsp, sp, " + std::to_string(STK) + "\n";
+                else{
+                    funccode = funccode + "  li\t\tt0, " + std::to_string(STK) + "\n";
+                    funccode = funccode + "  add\t\tsp, sp, t0\n";
+                }
                 funccode = funccode + "  ret\n";
             }
             else if(tiggercode[pos][0] == "store"){
