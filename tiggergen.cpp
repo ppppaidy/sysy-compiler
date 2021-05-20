@@ -67,10 +67,10 @@ int TiggerGenner::genTiggerCode(){
             stack_size += pnum;
             for(int i = 0; i < pnum; i++){
                 std::string var_name = "p" + std::to_string(i);
-                var_addr[var_name] = i+1;
+                var_addr[var_name] = i;
                 inside_func[var_name] = 1;
                 funccode = funccode + "store a" + std::to_string(i) + " "
-                    + std::to_string(i+1) + "\n";
+                    + std::to_string(i) + "\n";
             }
         }
         else if(eeyorecode[pos][0] == "end"){
