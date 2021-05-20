@@ -206,7 +206,7 @@ int RiscvGenner::genRiscvCode(){
                 std::string reg2 = tiggercode[pos][2].substr(0, tiggercode[pos][2].find('['));
                 if(imm_s == "t0"){
                     funccode = funccode + "  add\t\tt0, t0, " + reg2 + "\n";
-                    funccode = funccode + "  lw\t\t" + reg1 + ", 0(t0)\n";
+                    funccode = funccode + "  lw\t\t" + reg2 + ", 0(t0)\n";
                 }
                 else
                     funccode = funccode + "  lw\t\t" + reg1 + ", " + imm_s + "(" + reg2 + ")\n";
