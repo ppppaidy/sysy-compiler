@@ -185,7 +185,7 @@ int RiscvGenner::genRiscvCode(){
             }
             else{
                 std::string reg1 = tiggercode[pos][0];
-                std::string reg2 = tiggercode[pos][4];
+                std::string reg2 = tiggercode[pos][2];
                 std::string reg3 = tiggercode[pos][4];
                 std::string op = tiggercode[pos][3];
                 if(reg3[0] >='0' && reg3[0]<='9'){
