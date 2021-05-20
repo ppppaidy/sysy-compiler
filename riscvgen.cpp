@@ -52,7 +52,8 @@ int RiscvGenner::genRiscvCode(){
                     funccode = funccode + "  sw\t\tra, " + std::to_string(STK-4) + "(sp)\n";
                 else{
                     funccode = funccode + "  li\t\tt0, " + std::to_string(STK-4) + "\n";
-                    funccode = funccode + "  sw\t\tra, t0(sp)\n";
+                    funccode = funccode + "  add\t\tt0, t0, sp\n";
+                    funccode = funccode + "  sw\t\tra, 0(t0)\n";
                 }
                 funccodetail = "  .size\t\t" + funcname + ", .-" + funcname + "\n\n";
             }
@@ -111,7 +112,12 @@ int RiscvGenner::genRiscvCode(){
                         imm_s = "t0";
                     }
                     else imm_s = std::to_string(imm);
-                    funccode = funccode + "  lw\t\t" + tiggercode[pos][2] + ", " + imm_s + "(sp)\n";
+                    if(imm_s == "t0"){
+                        funccode = funccode + "  add\t\tt0, t0, sp\n";
+                        funccode = funccode + "  lw\t\t" + tiggercode[pos][2] + ", 0(t0)\n";
+                    }
+                    else
+                        funccode = funccode + "  lw\t\t" + tiggercode[pos][2] + ", " + imm_s + "(sp)\n";
                 }
             }
             else if(tiggercode[pos][0] == "loadaddr"){
@@ -128,7 +134,10 @@ int RiscvGenner::genRiscvCode(){
                         imm_s = "t0";
                     }
                     else imm_s = std::to_string(imm);
-                    funccode = funccode + "  addi\t\t" + tiggercode[pos][2] + ", sp, " + imm_s + "\n";
+                    if(imm_s[0] == 't')
+                        funccode = funccode + "  add\t\t" + tiggercode[pos][2] + ", sp, " + imm_s + "\n";
+                    else
+                        funccode = funccode + "  addi\t\t" + tiggercode[pos][2] + ", sp, " + imm_s + "\n";
                 }
             }
             else if(tiggercode[pos][0][0] == 'l'){
@@ -142,7 +151,8 @@ int RiscvGenner::genRiscvCode(){
                     funccode = funccode + "  lw\t\tra, " + std::to_string(STK-4) + "(sp)\n";
                 else{
                     funccode = funccode + "  li\t\tt0, " + std::to_string(STK-4) + "\n";
-                    funccode = funccode + "  lw\t\tra, t0(sp)\n";
+                    funccode = funccode + "  add\t\tt0, t0, sp\n";
+                    funccode = funccode + "  lw\t\tra, 0(t0)\n";
                 }
                 if(STK >= -2048 && STK <= 2047)
                     funccode = funccode + "  addi\t\tsp, sp, " + std::to_string(STK) + "\n";
@@ -160,7 +170,12 @@ int RiscvGenner::genRiscvCode(){
                     imm_s = "t0";
                 }
                 else imm_s = std::to_string(imm);
-                funccode = funccode + "  sw\t\t" + tiggercode[pos][1] + ", " + imm_s + "(sp)\n";
+                if(imm_s == "t0"){
+                    funccode = funccode + "  add\t\tt0, t0, sp\n";
+                    funccode = funccode + "  sw\t\t" + tiggercode[pos][1] + ", 0(t0)\n";
+                }
+                else
+                    funccode = funccode + "  sw\t\t" + tiggercode[pos][1] + ", " + imm_s + "(sp)\n";
             }
             else if(tiggercode[pos][0][tiggercode[pos][0].size()-1] == ']'){
                 std::string reg1 = tiggercode[pos][0].substr(0, tiggercode[pos][0].find('['));
@@ -172,7 +187,12 @@ int RiscvGenner::genRiscvCode(){
                     imm_s = "t0";
                 }
                 std::string reg2 = tiggercode[pos][2];
-                funccode = funccode + "  sw\t\t" + reg2 + ", " + imm_s + "(" + reg1 + ")\n";
+                if(imm_s == "t0"){
+                    funccode = funccode + "  add\t\tt0, t0, " + reg1 + "\n";
+                    funccode = funccode + "  sw\t\t" + reg2 + ", 0(t0)\n";
+                }
+                else
+                    funccode = funccode + "  sw\t\t" + reg2 + ", " + imm_s + "(" + reg1 + ")\n";
             }
             else if(tiggercode[pos][2][tiggercode[pos][2].size()-1] == ']'){
                 std::string reg1 = tiggercode[pos][0];
@@ -184,7 +204,12 @@ int RiscvGenner::genRiscvCode(){
                     imm_s = "t0";
                 }
                 std::string reg2 = tiggercode[pos][2].substr(0, tiggercode[pos][2].find('['));
-                funccode = funccode + "  lw\t\t" + reg1 + ", " + imm_s + "(" + reg2 + ")\n";
+                if(imm_s == "t0"){
+                    funccode = funccode + "  add\t\tt0, t0, " + reg2 + "\n";
+                    funccode = funccode + "  lw\t\t" + reg1 + ", 0(t0)\n";
+                }
+                else
+                    funccode = funccode + "  lw\t\t" + reg1 + ", " + imm_s + "(" + reg2 + ")\n";
             }
             else if(tiggercode[pos].size() == 3){
                 std::string reg1 = tiggercode[pos][0];
