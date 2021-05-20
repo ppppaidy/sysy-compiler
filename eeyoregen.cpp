@@ -577,11 +577,15 @@ int EeyoreGenner::printFuncExp(FuncExp* node){
     printf("FuncExp\n");
     add_var_to_now_func(node->NodeID);
     std::string code_now;
+    std::vector<int> tt;
     for(size_t i = 0; i < node->params.size(); i++){
         code_string = "";
         int t = print(node->params[i]);
         code_now = code_now + code_string;
-        code_now = code_now + "param " + gen_var(t) + "\n";
+        tt.push_back(t);
+    }
+    for(size_t i = 0; i < node->params.size(); i++){
+        code_now = code_now + "param " + gen_var(tt[i]) + "\n";
     }
     if(node->ident->id_name == "putint"
     || node->ident->id_name == "putch"
