@@ -615,7 +615,7 @@ int EeyoreGenner::printUnaryExp(UnaryExp* node){
     add_var_to_now_func(node->NodeID);
     int t = print(node->ue);
     code_string = code_string
-        + gen_var(node->NodeID) + " = " + node->uo + gen_var(t) + "\n";
+        + gen_var(node->NodeID) + " = " + node->uo + " " + gen_var(t) + "\n";
     return node->NodeID;
 }
 
