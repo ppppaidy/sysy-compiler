@@ -64,7 +64,7 @@ int TiggerGenner::genTiggerCode(){
             func_name = eeyorecode[pos][0];
             param_num = eeyorecode[pos][1];
             int pnum = atoi(param_num.substr(1, param_num.length()-2).c_str());
-            stack_size += pnum;
+            stack_size += pnum * 4;
             for(int i = 0; i < pnum; i++){
                 std::string var_name = "p" + std::to_string(i);
                 var_addr[var_name] = i;
