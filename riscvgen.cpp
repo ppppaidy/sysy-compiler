@@ -188,6 +188,10 @@ int RiscvGenner::genRiscvCode(){
                 std::string reg2 = tiggercode[pos][4];
                 std::string reg3 = tiggercode[pos][4];
                 std::string op = tiggercode[pos][3];
+                if(reg3[0] >='0' && reg3[0]<='9'){
+                    funccode = funccode + "  li\t\tt0, " + reg3 + "\n";
+                    reg3 = "t0";
+                }
                 if(op == "+")
                     funccode = funccode + "  add\t\t" + reg1 + ", " + reg2 + ", " + reg3 + "\n";
                 else if(op == "-")
